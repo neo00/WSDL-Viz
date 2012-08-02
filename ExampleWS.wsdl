@@ -2,6 +2,7 @@
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.example.org/ExampleWS/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ExampleWS" targetNamespace="http://www.example.org/ExampleWS/" xmlns:xsd1="http://www.example.org/ExampeSchema1">
     <wsdl:documentation>Documentation of the service.</wsdl:documentation>
 
+
     <wsdl:types>
     <xsd:schema targetNamespace="http://www.example.org/ExampleWS/">
       <xsd:element name="NewOperation">
