@@ -48,7 +48,7 @@
 					
 				</td>
 			</tr>
-			<tr>
+			<tr> 		
 				<td>Output</td>
 				<td>
 					<xsl:value-of select="wsdl:output/@message"></xsl:value-of>
