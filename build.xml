@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     Aug 5, 2012 2:02:53 PM                                                        
+
+     WSDL-Viz    
+     WSDL-Viz allows you to see the content of a Web Service WSDL in a visual way.
+                   
+     Copyright Nawwar Kabbani, 2012
+     Published under GPL version 2.0.                                                          
+     ====================================================================== -->
+
+<project name="WSDL-Viz" default="default">
+    <description>
+            WSDL-Viz allows you to see the content of a Web Service WSDL in a visual way.
+    </description>
+
+    <!-- ================================= 
+          target: default              
+         ================================= -->
+    <target name="default" depends="wsdl2html" description="WSDL-Viz allows you to see the content of a Web Service WSDL in a visual way.">
+        
+    </target>
+
+
+    <!-- - - - - - - - - - - - - - - - - - 
+          target: xslt2html                      
+         - - - - - - - - - - - - - - - - - -->
+    <target name="wsdl2html">
+    	<tstamp>
+    	<format property="ts" pattern="MMMM dd, yyyy HH:mm:ss" locale="en"/>
+    	</tstamp>
+    	<xslt style="wsdl2html.xsl" basedir="example" 
+    		destdir="output" extension=".html" 
+    	includes="*.svc.wsdl" filenameparameter="filename" >
+    		<outputproperty name="encoding" value="UTF-8" />
+			<param name="current-date" expression="${ts}"/>
+    		
+    	</xslt>
+    		
+    </target>
+
+</project>

@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	xmlns:xsd="http://www.w3.org/2001/XMLSchema" version="1.0"
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+	<xsl:param name="current-date" ></xsl:param>
+	<xsl:param name="filename"></xsl:param>
 	<xsl:output method="html" indent="yes" omit-xml-declaration="yes"
 		media-type="application/xhtml+xml" />
 
@@ -46,8 +48,16 @@
 				</script>
 			</head>
 			<body>
-				<!-- <polygon points="100,10 40,180 190,60 10,60 160,180" style="fill:lime;stroke:purple;stroke-width:5;fill-rule:evenodd;" 
-					/> -->
+			
+			<h1 >
+			<xsl:value-of select="@name"></xsl:value-of>
+			(<xsl:value-of select="$filename" />)
+			</h1>
+			<xsl:if test="$current-date" >
+			<xsl:text >Generated on: </xsl:text>
+			<xsl:value-of select="$current-date" />
+			</xsl:if>
+			<hr />
 				<xsl:apply-templates select="node()" />
 
 			</body>
