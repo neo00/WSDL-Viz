@@ -4,8 +4,8 @@
 	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
 	<xsl:param name="current-date" ></xsl:param>
 	<xsl:param name="filename"></xsl:param>
-	<xsl:output method="html" indent="yes" omit-xml-declaration="yes"
-		media-type="application/xhtml+xml" />
+	<xsl:output method="html" indent="yes" omit-xml-declaration="no"
+		 media-type="text/html" />
 
 
 
@@ -29,21 +29,25 @@
 
 				<script type="text/javascript">
 
-					$(function() {
-					$(".TypeLink").click (function() {
-					typeName = $(this).text();
-					typeView = $('#'+typeName);
-					if (typeView.length > 0) {
-					typeView.detach;
-					$(this).after(typeView);
-					$(this).parent().css("padding",
-					"0px");
-					$(this).hide();
-					typeView.show(300);
+				$(function() {
+					$(document).click (function(e) {
+					element = $(e.target)
+					if (! element.hasClass('TypeLink')) {
+						return false;
 					}
-					return false;
+						typeName = element.text();
+						typeView = $('#'+typeName);
+						if (typeView.length) {
+							typeView2 = typeView.clone();
+							element.after(typeView2);
+							
+							element.parent().css("padding", "0px");
+							element.hide();
+							typeView2.show(300);
+						}
+						return false;
 					});
-					});
+				});
 
 				</script>
 			</head>
