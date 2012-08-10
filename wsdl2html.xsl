@@ -104,12 +104,10 @@
 			</tr>
 		</table> <hr />
 	</xsl:template>
-
-	<xsl:template match="xsd:complexType">
-		<table style="display:none;width:100%">
+	<xsl:template match="xsd:complexType[count(xsd:choice)=0]">
+		<table style="display:none;width:100%" class="complexType">
 			<xsl:attribute name="id">
 				<xsl:value-of select="@name" />
-				<xsl:apply-templates select="xsd:annotation" mode="element" />
 			</xsl:attribute>
 			<tr>
 				<th colspan="3" align="center">
@@ -119,6 +117,7 @@
 						</xsl:attribute>
 					</a>
 					<xsl:value-of select="@name"></xsl:value-of>
+ 	  				<xsl:apply-templates select="xsd:annotation" mode="element" />
 					<xsl:if test="xsd:documentation">
 						<p colspan="3" align="left" style="color: #74B374; font-style: italic">
 							<xsl:value-of select="xsd:documentation"></xsl:value-of>
@@ -127,10 +126,38 @@
 				</th>
 			</tr>
 
-			<xsl:apply-templates />
+			<xsl:apply-templates  />
 		</table>
 
+	</xsl:template><xsl:template match="xsd:complexType/xsd:choice">
+		<table style="display:none;width:100%;background-color:red">
+			<xsl:attribute name="id">
+				<xsl:value-of select="../@name" />
+			</xsl:attribute>
+			<tr>
+				<th colspan="3" align="center">
+					<a>
+						<xsl:attribute name="name">
+							<xsl:value-of select="../@name"></xsl:value-of>
+						</xsl:attribute>
+					</a>
+					<xsl:value-of select="../@name"></xsl:value-of>
+					<xsl:if test="../xsd:annotation/xsd:documentation">
+						<p colspan="3" align="left" style="color: #74B374; font-style: italic">
+							<xsl:value-of select="../xsd:annotation/xsd:documentation"></xsl:value-of>
+						</p>
+					</xsl:if>
+					<br />&lt;Choice&gt;	
+				</th>
+			</tr>
+			<xsl:for-each select="xsd:element">
+			<xsl:call-template name="elementTemplate"></xsl:call-template>
+			</xsl:for-each>
+		</table>
+	
 	</xsl:template>
+
+	
 
 	<xsl:template match="xsd:complexContent/xsd:extension">
 		<tr>
@@ -146,6 +173,10 @@
 	</xsl:template>
 
 	<xsl:template match="xsd:sequence/xsd:element">
+	<xsl:call-template name="elementTemplate"></xsl:call-template>
+	</xsl:template>
+	<xsl:template name="elementTemplate">
+	
 		<tr>
 			<td>
 				<xsl:value-of select="@name" />
@@ -280,6 +311,9 @@
 			</td>
 		</tr>
 	</xsl:template>
+	
+	
+	
 
 	<xsl:template match="@*|node()">
 		<xsl:apply-templates select="node()" />
