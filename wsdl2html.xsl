@@ -17,12 +17,14 @@
 					body, p, h1, h2, h3, h4, table, td, th {
 					    font-family: verdana,helvetica,arial,sans-serif;
 					    font-size:small;
+					    background-color:White;
 					}
-					table { border-collapse:collapse; border:1px }
-					table td { border:1px solid black; padding:5px;}
+					table { border-collapse:collapse; border:1px  }
+					table td { border:1px solid Silver; padding:5px;}
 					table th {
-					border:1px solid black; background-color:Silver; font-weight:bold;}
+					border:1px solid Silver; background-color:Silver; font-weight:bold;}
 					.simpleType td { border:0px; }
+					.documentation {color: #60A060; font-style: italic}
 				</style>
 
 				<script src="http://code.jquery.com/jquery-latest.js"></script>
@@ -76,7 +78,7 @@
 				</th>
 			</tr>
 			<tr>
-				<td colspan="2" align="left" style="color: #74B374; font-style: italic">
+				<td colspan="2" align="left" class="documentation">
 					<xsl:value-of select="wsdl:documentation"></xsl:value-of>
 				</td>
 			</tr>
@@ -107,6 +109,7 @@
 		<table style="display:none;width:100%">
 			<xsl:attribute name="id">
 				<xsl:value-of select="@name" />
+				<xsl:apply-templates select="xsd:annotation" mode="element" />
 			</xsl:attribute>
 			<tr>
 				<th colspan="3" align="center">
@@ -132,6 +135,7 @@
 	<xsl:template match="xsd:complexContent/xsd:extension">
 		<tr>
 			<td colspan="3">
+				<xsl:apply-templates select="xsd:annotation" mode="element" />
 				<div style="font-style:italic">Base type:</div>
 				<xsl:variable name="type" select="substring-after(@base, ':')" />
 				<a href="#" class="TypeLink">
@@ -145,6 +149,7 @@
 		<tr>
 			<td>
 				<xsl:value-of select="@name" />
+				<xsl:apply-templates select="xsd:annotation" mode="element" />
 			</td>
 			<td>
 				<xsl:choose>
@@ -179,11 +184,18 @@
 			</td>
 		</tr>
 	</xsl:template>
+	
+	<xsl:template match="xsd:annotation/xsd:documentation" mode="element">
+	<br /><div class="documentation">
+		<xsl:value-of select="text()" />
+		</div>
+	</xsl:template>
 
 	<xsl:template match="xsd:element">
 		<table style="display:none;width:100%">
 			<xsl:attribute name="id">
 				<xsl:value-of select="@name" />
+				<xsl:apply-templates select="xsd:annotation" mode="element" />
 			</xsl:attribute>
 			<tr>
 				<td>
@@ -210,6 +222,7 @@
 					<a>
 						<xsl:attribute name="name">
 							<xsl:value-of select="../@name"></xsl:value-of>
+							<xsl:apply-templates select="../xsd:annotation" mode="element" />
 						</xsl:attribute>
 					</a>
 					<xsl:value-of select="../@name"></xsl:value-of>
@@ -237,6 +250,7 @@
 					<a>
 						<xsl:attribute name="name">
 							<xsl:value-of select="../@name"></xsl:value-of>
+							<xsl:apply-templates select="../xsd:annotation" mode="element" />				
 						</xsl:attribute>
 					</a>
 					<xsl:value-of select="../@name"></xsl:value-of>
