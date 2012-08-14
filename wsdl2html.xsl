@@ -30,9 +30,8 @@
 					    background-color:White;
 					}
 					table { border-collapse:collapse; border:1px  }
-					table td { border:1px solid Silver; padding:5px;}
-					table th {
-					border:1px solid Silver; background-color:Silver; font-weight:bold;}
+					table td, th { border:1px solid gray; padding:5px;}
+					table th { background-color:Silver; font-weight:bold;}
 					.simpleType td { border:0px; }
 					.documentation {color: #60A060; font-style: italic}
 				</style>
@@ -69,18 +68,27 @@
 			<xsl:value-of select="@name"></xsl:value-of>
 			(<xsl:value-of select="$filename" />)
 			</h1>
+			<div class="documentation">
+			<xsl:value-of select="wsdl:documentation" />
+			<br />
+			<xsl:value-of select="wsdl:service/wsdl:documentation" />
+			</div>
+			<hr />
+			<xsl:apply-templates select="*" />
 			<xsl:if test="$current-date" >
 			<xsl:text >Generated on: </xsl:text>
 			<xsl:value-of select="$current-date" />
 			</xsl:if>
-			<hr />
-				<xsl:apply-templates select="node()" />
-
 			</body>
 		</html>
 
 	</xsl:template>
-	<xsl:template match="wsdl:portType/wsdl:operation">
+	
+	<xsl:template match="wsdl:service" />
+	<xsl:template match="xsd:schema/xsd:annotation" />
+	<xsl:template match="wsdl:documentation" />
+	
+	<xsl:template match="wsdl:portType/wsdl:operation" >
 		<table>
 			<tr>
 				<th colspan="2" align="center">
@@ -127,19 +135,14 @@
 						</xsl:attribute>
 					</a>
 					<xsl:value-of select="@name"></xsl:value-of>
- 	  				<xsl:apply-templates select="xsd:annotation" mode="element" />
-					<xsl:if test="xsd:documentation">
-						<p colspan="3" align="left" style="color: #74B374; font-style: italic">
-							<xsl:value-of select="xsd:documentation"></xsl:value-of>
-						</p>
-					</xsl:if>
+ 	  				<xsl:apply-templates select="xsd:annotation" mode="documentation" />
 				</th>
 			</tr>
-
-			<xsl:apply-templates  />
+			<xsl:apply-templates select="xsd:complexContent|xsd:extension|xsd:sequence" />
 		</table>
-
-	</xsl:template><xsl:template match="xsd:complexType/xsd:choice">
+	</xsl:template>
+	
+	<xsl:template match="xsd:complexType/xsd:choice">
 		<table style="display:none;width:100%;background-color:red">
 			<xsl:attribute name="id">
 				<xsl:value-of select="../@name" />
@@ -190,7 +193,7 @@
 		<tr>
 			<td>
 				<xsl:value-of select="@name" />
-				<xsl:apply-templates select="xsd:annotation" mode="element" />
+				<xsl:apply-templates select="xsd:annotation" />
 			</td>
 			<td>
 				<xsl:choose>
@@ -226,21 +229,19 @@
 		</tr>
 	</xsl:template>
 	
-	<xsl:template match="xsd:annotation/xsd:documentation" mode="element">
-	<br /><div class="documentation">
-		<xsl:value-of select="text()" />
-		</div>
+<!-- 	<xsl:template match="xsd:annotation" >
+	<xsl:apply-templates select="xsd:documentation" />
 	</xsl:template>
-
+ -->
 	<xsl:template match="xsd:element">
 		<table style="display:none;width:100%">
 			<xsl:attribute name="id">
 				<xsl:value-of select="@name" />
-				<xsl:apply-templates select="xsd:annotation" mode="element" />
 			</xsl:attribute>
 			<tr>
 				<td>
 					<xsl:value-of select="@name" />
+					<xsl:apply-templates select="xsd:annotation"  />
 				</td>
 				<td>
 					<xsl:variable name="type" select="substring-after(@type, ':')" />
@@ -253,65 +254,55 @@
 
 	</xsl:template>
 
-	<xsl:template match="xsd:simpleType/xsd:restriction[xsd:enumeration]">
+	<xsl:template match="xsd:simpleType">
 		<table style="display:none;width:100%">
 			<xsl:attribute name="id">
-				<xsl:value-of select="../@name" />
+				<xsl:value-of select="@name" />
 			</xsl:attribute>
-			<tr>
-				<th colspan="3" align="center">
+			<xsl:apply-templates select="xsd:restriction" />
+
+		</table>
+	</xsl:template>
+
+ 	<xsl:template match="xsd:restriction[xsd:enumeration]">
+				<tr ><th  align="center">
 					<a>
 						<xsl:attribute name="name">
 							<xsl:value-of select="../@name"></xsl:value-of>
-							<xsl:apply-templates select="../xsd:annotation" mode="element" />
 						</xsl:attribute>
 					</a>
 					<xsl:value-of select="../@name"></xsl:value-of>
 					<div><xsl:text>[enum]</xsl:text></div>
-					<xsl:if test="xsd:documentation">
-						<p colspan="3" align="left" style="color: #74B374; font-style: italic">
-							<xsl:value-of select="xsd:documentation"></xsl:value-of>
-						</p>
-					</xsl:if>
+					<xsl:apply-templates select="../xsd:annotation" /> 
 				</th>
-			</tr>
-
-			<xsl:apply-templates />
-		</table>
+				</tr>
+				<xsl:apply-templates select="xsd:enumeration" />
 	</xsl:template>
 
-	<xsl:template match="xsd:simpleType/xsd:restriction[count(xsd:enumeration) = 0]">
-
-		<table style="display:none;width:100%; border:none" class="simpleType">
-			<xsl:attribute name="id">
-				<xsl:value-of select="../@name" />
+  	<xsl:template match="xsd:restriction[count(xsd:enumeration) = 0]">
+	<tr class="simpleType"><td>
+		<a>
+			<xsl:attribute name="name">
+				<xsl:value-of select="../@name"></xsl:value-of>
 			</xsl:attribute>
-<tr><td>
-
-					<a>
-						<xsl:attribute name="name">
-							<xsl:value-of select="../@name"></xsl:value-of>
-							<xsl:apply-templates select="../xsd:annotation" mode="element" />				
-						</xsl:attribute>
-					</a>
-					<xsl:value-of select="../@name"></xsl:value-of>
-					</td>
-					<td align="right" >
-				<xsl:text> : </xsl:text>
-				
-				<xsl:variable name="type" select="substring-after(@base, ':')" />
-				<a href="#" class="TypeLink">
-					<xsl:value-of select="$type" />
-				</a>
-			</td></tr>
-			<xsl:if test="xsd:documentation">
-			<tr>
-						<td colspan="3" align="left" style="color: #74B374; font-style: italic">
-							<xsl:value-of select="xsd:documentastion"></xsl:value-of>
-						</td>
-						</tr>
-					</xsl:if>
-		</table>
+		</a>
+			<xsl:value-of select="../@name"></xsl:value-of>
+			<xsl:apply-templates select="../xsd:annotation" />				
+		</td>
+		<td align="right" >
+		<xsl:text disable-output-escaping="yes">&amp;nbsp;:&amp;nbsp; </xsl:text>
+		
+		<xsl:variable name="type" select="substring-after(@base, ':')" />
+		<a href="#" class="TypeLink">
+			<xsl:value-of select="$type" />
+		</a>
+	</td></tr>
+	</xsl:template>
+ 
+	<xsl:template match="xsd:documentation">
+		<br /><div class="documentation">
+		<xsl:value-of select="text()" />
+		</div>
 	</xsl:template>
 	
 	<xsl:template match="xsd:enumeration">
@@ -325,9 +316,10 @@
 	
 	
 
-	<xsl:template match="@*|node()">
+<!-- 	<xsl:template match="@*|node()">
 		<xsl:apply-templates select="node()" />
 	</xsl:template>
+ -->	
 	<xsl:template match="xsd:import">
 		<xsl:variable name="schema" select="@schemaLocation" />
 		<xsl:apply-templates select="document($schema)" />
