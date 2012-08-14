@@ -1,5 +1,8 @@
+Project website: [http://neo00.github.com/WSDL-Viz/](http://neo00.github.com/WSDL-Viz/)
+
+
 # What is WSDL-Viz
-WSDL-Viz (WSDL Visualization) is a simple tool to display the content of a WSDL and XSD files in a human-friendly visual view, as opposed to the complex/hard-to-read XML.
+[WSDL-Viz](http://neo00.github.com/WSDL-Viz/) (WSDL Visualization) is a simple tool to display the content of a WSDL and XSD files in a human-friendly visual view, as opposed to the complex/hard-to-read XML.
 
 # How does it work?
 This is an XSL transformation that takes a WSDL file as an input, and generates a human-friendly HTML file as output enhanced with a small dose of Javascript (jQuery) for some simple, but meaningful, interactive visualization.
@@ -10,12 +13,15 @@ There are several ways to run the XSL transformation. The easiest ways are using
 ## Windows using PowerShell
 I have included an PowerShell script (Run.ps1) that invokes .Net's XslCompiledTransform to apply the XSL on a given WSDL file and generate the HTML output file. Open a PowerShell window, and CD to the directory that contains the WDSL-Viz files. Then type:
 
-` .\Run.ps1 http://example.com/ExampleService?wsdl` 
+`
+.\Run.ps1 http://example.com/ExampleService?wsdl
+` 
 
 if the WSDL is on a Web site (note that the script will fail if the WSDL page requires authentication).
 Or if the WSDL file is in a local folder then you can similarly run:
 
-` .\Run.ps1  "c:\Example Folder\WSDL\Service.wsdl"
+`
+.\Run.ps1  "c:\Example Folder\WSDL\Service.wsdl"
 `
 
 If the WSDL references any external XSD files, you have to make sure that they are in the right relative folder. So for example, if the above WSDL file contains an <import> element for a Schema file located in "../Schemas/Schema1.xsd", then you have to make sure that "Schema1.xsd" is in "C:\Example Folder\Schemas\Schema1.xsd".
