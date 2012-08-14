@@ -28,23 +28,55 @@
 
     <div class="container">
       <section id="main_content">
-        <p>Welcome to the WSDL-Viz wiki!</p>
+        <h1>What is WSDL-Viz</h1>
+
+<p>WSDL-Viz (WSDL Visualization) is a simple tool to display the content of a WSDL and XSD files in a human-friendly visual view, as opposed to the complex/hard-to-read XML.</p>
 
 <h1>How does it work?</h1>
 
-<p>This is an XSL transformation that takes a WSDL file as an input, and generates an HTML file as output.</p>
+<p>This is an XSL transformation that takes a WSDL file as an input, and generates a human-friendly HTML file as output enhanced with a small dose of Javascript (jQuery) for some simple, but meaningful, interactive visualization.</p>
+
+<h1>How to run?</h1>
+
+<p>There are several ways to run the XSL transformation. The easiest ways are using the supplied PowerShell script (for Windows) or using Apache Ant (for other operating systems).</p>
+
+<h2>Windows using PowerShell</h2>
+
+<p>I have included an PowerShell script (Run.ps1) that invokes .Net's XslCompiledTransform to apply the XSL on a given WSDL file and generate the HTML output file. Open a PowerShell window, and CD to the directory that contains the WDSL-Viz files. Then type:</p>
+
+<p><code>.\Run.ps1 http://example.com/ExampleService?wsdl</code> </p>
+
+<p>if the WSDL is on a Web site (note that the script will fail if the WSDL page requires authentication).
+Or if the WSDL file is in a local folder then you can similarly run:</p>
+
+<p><code>.\Run.ps1  "c:\Example Folder\WSDL\Service.wsdl"
+</code></p>
+
+<p>If the WSDL references any external XSD files, you have to make sure that they are in the right relative folder. So for example, if the above WSDL file contains an  element for a Schema file located in "../Schemas/Schema1.xsd", then you have to make sure that "Schema1.xsd" is in "C:\Example Folder\Schemas\Schema1.xsd".</p>
+
+<p>It is also possible to run the PowerShell script in Windows from the file browser directly. Just right click on "Run.ps1" and choose "Run with PowerShell". Then enter the URL or the path of the WSDL when prompted. </p>
+
+<h2>Under Other OS's Using Ant</h2>
+
+<p>It's also possible to invoke XSL transformation using Apache Ant. I've supplied a build.xml for this purpose. Currently you need to edit build.xml to specify the location of the WSDL file and the output file. </p>
+
+<h1>License</h1>
+
+<p>WSDL-Viz is Free, as in Free Speech, released under GNU General Public License (GPL) v2.0. 
+<a href="https://www.gnu.org/licenses/gpl-2.0.html">https://www.gnu.org/licenses/gpl-2.0.html</a>.</p>
       </section>
     </div>
-  <hr />
-  <div id="paypal" align="center">
-    <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
-      <input type="hidden" name="cmd" value="_s-xclick">
-      <input type="hidden" name="hosted_button_id" value="CAQHFZDZ8V4KC">
-      <input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-      <img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-    </form>
 
-  </div>
-    
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-34053280-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
   </body>
 </html>
