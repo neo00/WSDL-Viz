@@ -31,7 +31,7 @@
     	</tstamp>
     	<xslt style="wsdl2html.xsl" basedir="example" 
     		destdir="output" extension=".html" 
-    	includes="*.svc.wsdl" filenameparameter="filename" >
+    	includes="*.wsdl" filenameparameter="filename" >
     		<outputproperty name="encoding" value="UTF-8" />
 			<param name="current-date" expression="${ts}"/>
     		
